@@ -1,0 +1,8 @@
+road_id,name,length_km,status,rainfall_mm,terrain_risk,historical_incidents,road_condition,flood_risk,landslide_history,traffic_level,field_incident_severity,accessibility_score,disruption_probability,risk_level,path
+R-204,Guwahati-Shillong Highway (NH-6),100.0,HIGH RISK,142.0,72.0,8,3.5,55.0,85.0,65.0,None,1,0.99,CRITICAL,"26.1445,91.7362;26.12,91.79;26.115,91.89;26.04,91.89;25.9015,91.88;25.75,91.89;25.642,91.895;25.5788,91.8833"
+R-207,Shillong-Jowai Bypass (NH-6),65.0,HIGH RISK,30.0,35.0,2,7.5,10.0,30.0,40.0,None,19,0.81,CRITICAL,"25.5788,91.8833;25.57,92.05;25.49,92.18;25.4484,92.2032"
+R-211,Jowai-Khliehriat Road (NH-6),30.0,HIGH RISK,40.0,30.0,1,7.0,15.0,25.0,45.0,None,20,0.8,HIGH,"25.4484,92.2032;25.37,92.31;25.3578,92.3689"
+R-218,Khliehriat-Silchar Ridge (NH-6),95.0,HIGH RISK,55.0,75.0,8,5.5,40.0,80.0,35.0,None,2,0.98,CRITICAL,"25.3578,92.3689;25.17,92.38;25.105,92.42;24.97,92.57;24.897,92.593;24.8333,92.7789"
+R-301,Guwahati-Nagaon Expressway (NH-27),120.0,HIGH RISK,20.0,10.0,1,9.0,30.0,10.0,70.0,None,35,0.65,HIGH,"26.1445,91.7362;26.11,92.17;26.23,92.52;26.35,92.68"
+R-302,Nagaon-Haflong Mountain Cut (NH-54),150.0,HIGH RISK,25.0,55.0,3,7.0,20.0,40.0,30.0,None,15,0.85,CRITICAL,"26.35,92.68;26.13,92.89;25.92,93.0;25.75,92.95;25.57,92.98;25.17,93.03"
+R-303,Haflong-Silchar Link (NH-270),100.0,HIGH RISK,35.0,60.0,4,6.5,35.0,50.0,25.0,None,9,0.91,CRITICAL,"25.17,93.03;25.15,93.03;25.11,92.87;24.98,92.85;24.8333,92.7789"
