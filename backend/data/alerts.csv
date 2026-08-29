@@ -1,1 +1,7 @@
 alert_id,type,message,timestamp,severity,read
+AL-B95FEE,ROUTE_UPDATED,Vehicle V-105 rerouted via Haflong Bypass to bypass R-204.,1788023692.7711782,WARNING,False
+AL-D1216E,CRITICAL_DELIVERY_DELAY,CRITICAL cargo DL-1092 (Essential Medicines) is delayed by +1h 25m. ETA: 18:05.,1788023692.7681913,CRITICAL,False
+AL-D23C6D,ROUTE_UPDATED,Vehicle V-104 rerouted via Haflong Bypass to bypass R-204.,1788023692.7661037,WARNING,False
+AL-95DB6E,ROUTE_UPDATED,Vehicle V-102 rerouted via Haflong Bypass to bypass R-204.,1788023692.7623343,WARNING,False
+AL-E5D0F7,ROUTE_UPDATED,Vehicle V-101 rerouted via Haflong Bypass to bypass R-204.,1788023692.7600589,WARNING,False
+AL-53E3C4,ROAD_BLOCKED,Road R-204 (Guwahati-Shillong Highway (NH-6)) is BLOCKED due to a Landslide. 4 vehicles and 3 deliveries affected.,1788023692.7574136,CRITICAL,False

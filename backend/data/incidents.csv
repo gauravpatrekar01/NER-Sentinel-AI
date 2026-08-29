@@ -1,1 +1,2 @@
 incident_id,road_id,lat,lon,type,severity,description,photo_url,timestamp,active
+INC-475A4F,R-204,25.9015,91.88,Landslide,CRITICAL,Monsoon triggered rockfall block at NH-6 Guwahati-Shillong corridor segment R-204.,https://images.unsplash.com/photo-1594897030264-ab7d87efc473?auto=format&fit=crop&w=400&q=80,1788023692.4161854,True
