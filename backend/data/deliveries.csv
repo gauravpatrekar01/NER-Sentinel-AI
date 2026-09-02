@@ -2,7 +2,7 @@ delivery_id,cargo,priority,vehicle_id,origin,destination,status,weight_kg,eta_st
 DL-1092,Essential Medicines,CRITICAL,V-104,Guwahati Central Depot,Silchar District Hospital,EN_ROUTE,450.0,18:05,16:40,Rerouted via NH-27/NH-54 (Haflong Bypass) due to NH-6 block,18.0,82.0
 DL-1093,Drinking Water Containers,HIGH,V-103,Shillong Depot,Jowai Distribution Point,EN_ROUTE,2500.0,13:10,13:10,,74.8,25.2
 DL-1094,Construction Structural Steel,MEDIUM,V-107,Guwahati Steel Yard,Silchar Infrastructure Project,EN_ROUTE,8500.0,19:30,19:30,,82.8,17.2
-DL-1095,Agricultural Winter Seeds,NORMAL,V-101,Guwahati Depot,Shillong Market,EN_ROUTE,1200.0,21:23,12:50,Rerouted via alternate corridor,82.8,17.2
-DL-1096,Baby Food Packets,HIGH,V-102,Guwahati Depot,Shillong Warehouse,EN_ROUTE,800.0,22:55,13:30,Rerouted via alternate corridor,82.8,17.2
+DL-1095,Agricultural Winter Seeds,NORMAL,V-101,Guwahati Depot,Shillong Market,EN_ROUTE,1200.0,05:22,12:50,Rerouted via alternate corridor,82.8,17.2
+DL-1096,Baby Food Packets,HIGH,V-102,Guwahati Depot,Shillong Warehouse,EN_ROUTE,800.0,02:48,13:30,Rerouted via alternate corridor,82.8,17.2
 DL-1097,Medical Oxygen Cylinder Pack,CRITICAL,V-108,Shillong Medical Gas,Silchar District Hospital,EN_ROUTE,600.0,17:15,17:15,,88.4,11.6
 DL-1098,Hygiene & Sanitation Kits,MEDIUM,V-106,Haflong Warehouse,Silchar NGO Center,EN_ROUTE,400.0,14:50,14:50,,82.8,17.2
