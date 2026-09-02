@@ -39,6 +39,11 @@ def startup_event():
     try:
         recalculate_all_roads_risk()
         print("Initial database recalculation completed successfully.")
+        
+        # Start GPS Simulator background task
+        from app.services.gps_simulator import run_gps_simulation
+        import asyncio
+        asyncio.create_task(run_gps_simulation())
     except Exception as e:
         print(f"Error during startup recalculation: {e}")
 

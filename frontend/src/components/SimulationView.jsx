@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { Play, TrendingUp, Sliders, ShieldCheck } from "lucide-react";
+import { Play, TrendingUp, Sliders, ShieldCheck, AlertTriangle } from "lucide-react";
 
 export default function SimulationView() {
   const [scenario, setScenario] = useState("heavy_rain");
@@ -24,6 +24,22 @@ export default function SimulationView() {
       .catch(err => {
         console.error(err);
         setLoading(false);
+      });
+  };
+
+  const [eventLoading, setEventLoading] = useState(false);
+  const handleTriggerEvent = (eventType) => {
+    setEventLoading(true);
+    fetch("http://127.0.0.1:8000/api/simulation/event", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ event_type: eventType })
+    })
+      .then(res => res.json())
+      .then(() => setEventLoading(false))
+      .catch(err => {
+        console.error(err);
+        setEventLoading(false);
       });
   };
 
@@ -118,6 +134,30 @@ export default function SimulationView() {
           </button>
         </div>
 
+        {/* Real-Time System Triggers */}
+        <div className="glass-card" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <h3 className="card-title">
+            <span>Real-Time System Triggers</span>
+            <AlertTriangle size={16} />
+          </h3>
+          <p style={{ fontSize: 11, color: "var(--text-secondary)" }}>
+            Inject real-time events into the live network. Watch as the decision engine reroutes vehicles in the Control Tower.
+          </p>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            <button className="btn btn-outline" onClick={() => handleTriggerEvent("NORMAL")} disabled={eventLoading} style={{ fontSize: 11 }}>Clear Weather</button>
+            <button className="btn btn-outline" onClick={() => handleTriggerEvent("HEAVY_RAIN")} disabled={eventLoading} style={{ fontSize: 11 }}>Heavy Rain</button>
+            <button className="btn btn-outline" onClick={() => handleTriggerEvent("EXTREME_RAIN")} disabled={eventLoading} style={{ fontSize: 11, color: "var(--color-warning)", borderColor: "var(--color-warning)" }}>Extreme Storm</button>
+            <button className="btn btn-outline" onClick={() => handleTriggerEvent("FLOOD")} disabled={eventLoading} style={{ fontSize: 11, color: "var(--color-critical)", borderColor: "var(--color-critical)" }}>Flash Flood</button>
+            <button className="btn btn-outline" onClick={() => handleTriggerEvent("LANDSLIDE")} disabled={eventLoading} style={{ fontSize: 11, color: "var(--color-critical)", borderColor: "var(--color-critical)" }}>Landslide Block</button>
+            <button className="btn btn-outline" onClick={() => handleTriggerEvent("EMERGENCY_MODE")} disabled={eventLoading} style={{ fontSize: 11, color: "var(--color-critical)", borderColor: "var(--color-critical)" }}>Emergency Mode</button>
+          </div>
+          
+          {eventLoading && <div style={{ fontSize: 11, color: "var(--color-warning)", textAlign: "center", marginTop: 8 }}>Injecting event...</div>}
+        </div>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         {/* Results Analysis Panel */}
         <div className="glass-card" style={{ display: "flex", flexDirection: "column", gap: 16, minHeight: "450px" }}>
           <h3 className="card-title">

@@ -90,85 +90,13 @@ def register_incident_and_cascade(
             severity="CRITICAL"
         )
         
-    # 6. Route Optimization & ETA Recalculation
-    vehicles_dict = {v.vehicle_id: v for v in vehicles}
-    deliveries_dict = {d.delivery_id: d for d in deliveries}
-    
-    for veh in affected_vehicles:
-        # Find matching delivery for this vehicle
-        veh_deliveries = [d for d in deliveries if d.vehicle_id == veh.vehicle_id]
-        primary_priority = veh_deliveries[0].priority if veh_deliveries else "NORMAL"
+    # 6. Route Optimization & ETA Recalculation via Decision Engine
+    # By calling the GPS simulator update function, it will automatically
+    # evaluate the new risks and reroute any vehicles using the Decision Engine.
+    from app.services.gps_simulator import update_vehicle_positions
+    if optimize_immediately:
+        update_vehicle_positions()
         
-        if optimize_immediately:
-            # Run Route Optimizer
-            opt_result = get_optimized_routes(priority=primary_priority)
-            
-            # Update vehicle route
-            # Get paths and segments of recommended route
-            rec_route_id = opt_result["recommended_route_id"]
-            if rec_route_id:
-                # Find the route details in result list
-                rec_route_details = next((r for r in opt_result["routes"] if r["route_id"] == rec_route_id), None)
-                if rec_route_details:
-                    new_segments = rec_route_details["road_ids"]
-                    veh.current_route_id = ";".join(new_segments)
-                    
-                    # Project vehicle coordinates to the start or a segment along the new route
-                    # Since V-104 starts at Guwahati, reset progress or coordinate to first point
-                    if veh.vehicle_id == "V-104":
-                        veh.progress = 0.05
-                        veh.current_lat = 26.1445
-                        veh.current_lon = 91.7362
-                        
-                    # Generate Route Updated Alert
-                    route_name_display = "Haflong Bypass" if rec_route_id == "RT-NH27-54" else rec_route_details["name"]
-                    generate_alert(
-                        alert_type="ROUTE_UPDATED",
-                        message=f"Vehicle {veh.vehicle_id} rerouted via {route_name_display} to bypass {road_id}.",
-                        severity="WARNING"
-                    )
-            else:
-                veh.status = "BLOCKED"
-                generate_alert(
-                    alert_type="VEHICLE_DELAY",
-                    message=f"Vehicle {veh.vehicle_id} is blocked. No alternative routes available.",
-                    severity="CRITICAL"
-                )
-        else:
-            # Baseline - vehicle does not reroute, becomes delayed/blocked
-            veh.status = "BLOCKED"
-            
-        # Update ETA and Delay for each delivery of this vehicle
-        for deliv in veh_deliveries:
-            # We need the path length of the current assigned route
-            if optimize_immediately and rec_route_id and rec_route_details:
-                path_len = rec_route_details["total_distance_km"]
-            else:
-                # Use current route segments sum
-                path_len = sum(roads_dict[rid].length_km for rid in veh.current_route_id.split(";") if rid in roads_dict)
-                
-            new_eta, delay_val, delay_reason = calculate_eta_and_delay(veh, deliv, roads_dict, path_len)
-            
-            deliv.eta_str = new_eta
-            deliv.delay_reason = delay_reason
-            if "stuck" in delay_reason.lower() or "blocked" in delay_reason.lower():
-                deliv.status = "DELAYED"
-                
-            # If critical delivery is delayed, generate a warning
-            if deliv.priority == "CRITICAL" and delay_val != "On Time":
-                generate_alert(
-                    alert_type="CRITICAL_DELIVERY_DELAY",
-                    message=f"CRITICAL cargo {deliv.delivery_id} ({deliv.cargo}) is delayed by {delay_val}. ETA: {new_eta}.",
-                    severity="CRITICAL"
-                )
-                
-    # 7. Recalculate Delivery Risks
-    recalculate_delivery_risks(deliveries, vehicles_dict, roads_dict)
-    
-    # Save back to files
-    save_vehicles(vehicles)
-    save_deliveries(deliveries)
-    
     return {
         "incident_id": inc_id,
         "affected_vehicles_count": len(affected_vehicles),

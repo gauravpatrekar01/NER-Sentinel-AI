@@ -77,6 +77,7 @@ export default function VehiclesView({ vehicles, onSelectVehicle }) {
                   </td>
                   <td style={{ padding: 8, fontFamily: "Orbitron" }}>
                     {veh.eta_str} {veh.status === "BLOCKED" && <span style={{ color: "var(--color-blocked)" }}>(Stuck)</span>}
+                    {veh.delay_reason && <div style={{ fontSize: 10, color: "var(--color-warning)", marginTop: 4, fontFamily: "Inter" }}>{veh.delay_reason}</div>}
                   </td>
                   <td style={{ padding: 8, fontWeight: "bold", color: veh.delivery_risk_pct > 60 ? "var(--color-blocked)" : "var(--color-open)" }}>
                     {veh.delivery_risk_pct}%

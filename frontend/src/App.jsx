@@ -171,31 +171,31 @@ export default function App() {
             className={`nav-item ${activeTab === 'control-tower' ? 'active' : ''}`}
             onClick={() => setActiveTab("control-tower")}
           >
-            Control Tower
+            Government / Admin
           </button>
           <button 
             className={`nav-item ${activeTab === 'vehicles' ? 'active' : ''}`}
             onClick={() => setActiveTab("vehicles")}
           >
-            Vehicles
+            Logistics Operator
           </button>
           <button 
             className={`nav-item ${activeTab === 'deliveries' ? 'active' : ''}`}
             onClick={() => setActiveTab("deliveries")}
           >
-            Deliveries
+            Emergency Response
           </button>
           <button 
             className={`nav-item ${activeTab === 'incidents' ? 'active' : ''}`}
             onClick={() => setActiveTab("incidents")}
           >
-            Field Officers
+            Field Officer
           </button>
           <button 
             className={`nav-item ${activeTab === 'simulation' ? 'active' : ''}`}
             onClick={() => setActiveTab("simulation")}
           >
-            Simulator
+            Simulation Console
           </button>
         </nav>
 
