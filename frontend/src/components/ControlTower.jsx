@@ -169,6 +169,25 @@ export default function ControlTower({
         </div>
       </div>
 
+      <div className="network-summary" aria-label="Network summary">
+        <div>
+          <span className="summary-label">Network status</span>
+          <strong>{roads.filter(r => r.status !== "BLOCKED").length} of {roads.length} corridors open</strong>
+        </div>
+        <div>
+          <span className="summary-label">Weather</span>
+          <strong>{weather.forecast} · {weather.rainfall_mm} mm</strong>
+        </div>
+        <div>
+          <span className="summary-label">Incidents</span>
+          <strong>{incidents.filter(incident => incident.active).length} active</strong>
+        </div>
+        <div>
+          <span className="summary-label">Priority response</span>
+          <strong>{deliveries.filter(delivery => delivery.priority === "CRITICAL").length} critical shipments</strong>
+        </div>
+      </div>
+
       {/* Main Command Center Screen */}
       <div className="dashboard-grid">
         
@@ -212,7 +231,13 @@ export default function ControlTower({
               <Truck size={16} />
             </h3>
             <div style={{ overflowY: "auto", display: "flex", flexDirection: "column", gap: 8, flex: 1 }}>
-              {deliveries.map(d => (
+              {deliveries.length === 0 ? (
+                <div className="empty-state">
+                  <Truck size={24} />
+                  <strong>No active shipments</strong>
+                  <span>Shipment updates will appear here when the backend is connected.</span>
+                </div>
+              ) : deliveries.map(d => (
                 <div 
                   key={d.delivery_id} 
                   className={`alert-item alert-severity-${d.priority === 'CRITICAL' ? 'CRITICAL' : 'WARNING'}`}
@@ -284,10 +309,9 @@ export default function ControlTower({
             style={{ width: "100%", height: "100%" }}
             zoomControl={true}
           >
-            {/* Dark Matter Premium Tiles */}
             <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
             {/* Render Road Segments */}

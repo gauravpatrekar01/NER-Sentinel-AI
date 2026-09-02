@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
-import ControlTower from "./components/ControlTower";
-import VehiclesView from "./components/VehiclesView";
-import DeliveriesView from "./components/DeliveriesView";
-import IncidentsView from "./components/IncidentsView";
-import SimulationView from "./components/SimulationView";
+import React, { lazy, Suspense, useState, useEffect } from "react";
+const ControlTower = lazy(() => import("./components/ControlTower"));
+const VehiclesView = lazy(() => import("./components/VehiclesView"));
+const DeliveriesView = lazy(() => import("./components/DeliveriesView"));
+const IncidentsView = lazy(() => import("./components/IncidentsView"));
+const SimulationView = lazy(() => import("./components/SimulationView"));
 import { AlertCircle, RotateCcw, AlertTriangle, ShieldCheck } from "lucide-react";
+
+const API_BASE_URL = "http://127.0.0.1:8000";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("control-tower");
@@ -22,38 +24,37 @@ export default function App() {
   const [emergencyMode, setEmergencyMode] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [resetMessage, setResetMessage] = useState("");
+  const [connectionStatus, setConnectionStatus] = useState("connecting");
+  const [isLoadingData, setIsLoadingData] = useState(true);
 
   // Fetch all database states from FastAPI backend
-  const refreshAllData = () => {
-    fetch("http://127.0.0.1:8000/api/roads")
-      .then(res => res.json())
-      .then(setRoads)
-      .catch(err => console.error("Error loading roads:", err));
+  const refreshAllData = async () => {
+    try {
+      const endpoints = ["roads", "vehicles", "deliveries", "incidents", "alerts", "weather"];
+      const responses = await Promise.all(
+        endpoints.map(endpoint => fetch(`${API_BASE_URL}/api/${endpoint}`))
+      );
 
-    fetch("http://127.0.0.1:8000/api/vehicles")
-      .then(res => res.json())
-      .then(setVehicles)
-      .catch(err => console.error("Error loading vehicles:", err));
+      if (responses.some(response => !response.ok)) {
+        throw new Error("One or more API requests failed");
+      }
 
-    fetch("http://127.0.0.1:8000/api/deliveries")
-      .then(res => res.json())
-      .then(setDeliveries)
-      .catch(err => console.error("Error loading deliveries:", err));
+      const [roadsData, vehiclesData, deliveriesData, incidentsData, alertsData, weatherData] =
+        await Promise.all(responses.map(response => response.json()));
 
-    fetch("http://127.0.0.1:8000/api/incidents")
-      .then(res => res.json())
-      .then(setIncidents)
-      .catch(err => console.error("Error loading incidents:", err));
-
-    fetch("http://127.0.0.1:8000/api/alerts")
-      .then(res => res.json())
-      .then(setAlerts)
-      .catch(err => console.error("Error loading alerts:", err));
-
-    fetch("http://127.0.0.1:8000/api/weather")
-      .then(res => res.json())
-      .then(setWeather)
-      .catch(err => console.error("Error loading weather:", err));
+      setRoads(roadsData);
+      setVehicles(vehiclesData);
+      setDeliveries(deliveriesData);
+      setIncidents(incidentsData);
+      setAlerts(alertsData);
+      setWeather(weatherData);
+      setConnectionStatus("connected");
+    } catch (err) {
+      console.error("Error loading dashboard data:", err);
+      setConnectionStatus("offline");
+    } finally {
+      setIsLoadingData(false);
+    }
   };
 
   // Poll database updates every 1500ms
@@ -68,7 +69,7 @@ export default function App() {
     setResetMessage("Resetting network state...");
     setEmergencyMode(false);
     
-    fetch("http://127.0.0.1:8000/api/reset", { method: "POST" })
+    fetch(`${API_BASE_URL}/api/reset`, { method: "POST" })
       .then(res => res.json())
       .then(data => {
         refreshAllData();
@@ -77,6 +78,7 @@ export default function App() {
       })
       .catch(err => {
         console.error(err);
+        setConnectionStatus("offline");
         setResetMessage("Reset failed. Verify backend.");
       });
   };
@@ -94,7 +96,7 @@ export default function App() {
       optimize_immediately: true
     };
 
-    fetch("http://127.0.0.1:8000/api/incidents", {
+    fetch(`${API_BASE_URL}/api/incidents`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
@@ -217,9 +219,9 @@ export default function App() {
             RESET DEMO
           </button>
 
-          <div className="live-indicator">
+          <div className={`live-indicator status-${connectionStatus}`} aria-live="polite">
             <div className="pulse-dot"></div>
-            <span>LIVE telemetry</span>
+            <span>{connectionStatus === "connected" ? "BACKEND CONNECTED" : connectionStatus === "offline" ? "BACKEND OFFLINE" : "CONNECTING..."}</span>
           </div>
         </div>
       </header>
@@ -246,7 +248,18 @@ export default function App() {
       )}
 
       {/* Main View Area */}
-      {renderActiveContent()}
+      {connectionStatus === "offline" && (
+        <div className="connection-banner" role="alert">
+          <AlertCircle size={16} />
+          <span>Dashboard data is unavailable. Start the FastAPI backend, then retry.</span>
+          <button className="btn btn-outline" onClick={refreshAllData} disabled={isLoadingData}>
+            RETRY CONNECTION
+          </button>
+        </div>
+      )}
+      <Suspense fallback={<div style={{ padding: 24, color: "var(--text-secondary)" }}>Loading view...</div>}>
+        {renderActiveContent()}
+      </Suspense>
     </div>
   );
 }

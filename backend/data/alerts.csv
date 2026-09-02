@@ -1,4 +1,13 @@
 alert_id,type,message,timestamp,severity,read
+AL-AF84CB,ROAD_BLOCKED,Road R-204 (Guwahati-Shillong Highway (NH-6)) is BLOCKED due to a Landslide. 0 vehicles and 0 deliveries affected.,1788357431.7680597,CRITICAL,False
+AL-5106CD,ROAD_BLOCKED,Road R-204 (Guwahati-Shillong Highway (NH-6)) is BLOCKED due to a Landslide. 0 vehicles and 0 deliveries affected.,1788357431.3614779,CRITICAL,False
+AL-1F5938,ROAD_BLOCKED,Road R-204 (Guwahati-Shillong Highway (NH-6)) is BLOCKED due to a Landslide. 0 vehicles and 0 deliveries affected.,1788357431.2193613,CRITICAL,False
+AL-3FEA07,ROAD_BLOCKED,Road R-204 (Guwahati-Shillong Highway (NH-6)) is BLOCKED due to a Landslide. 0 vehicles and 0 deliveries affected.,1788357430.8301778,CRITICAL,False
+AL-6D2081,ROAD_BLOCKED,Road R-204 (Guwahati-Shillong Highway (NH-6)) is BLOCKED due to a Landslide. 0 vehicles and 0 deliveries affected.,1788357429.1973886,CRITICAL,False
+AL-B998FC,ROAD_BLOCKED,Road R-204 (Guwahati-Shillong Highway (NH-6)) is BLOCKED due to a Landslide. 0 vehicles and 0 deliveries affected.,1788357428.6636834,CRITICAL,False
+AL-6FFD24,ROAD_BLOCKED,Road R-204 (Guwahati-Shillong Highway (NH-6)) is BLOCKED due to a Landslide. 0 vehicles and 0 deliveries affected.,1788357428.063338,CRITICAL,False
+AL-05214E,ROAD_BLOCKED,Road R-204 (Guwahati-Shillong Highway (NH-6)) is BLOCKED due to a Landslide. 0 vehicles and 0 deliveries affected.,1788357368.29504,CRITICAL,False
+AL-2097EA,ROAD_BLOCKED,Road R-204 (Guwahati-Shillong Highway (NH-6)) is BLOCKED due to a Landslide. 0 vehicles and 0 deliveries affected.,1788357361.5555582,CRITICAL,False
 AL-0538B0,ROUTE_UPDATED,Vehicle V-105 rerouted via Haflong Bypass to bypass R-204.,1788095360.578043,WARNING,False
 AL-700CE4,CRITICAL_DELIVERY_DELAY,CRITICAL cargo DL-1092 (Essential Medicines) is delayed by +1h 25m. ETA: 18:05.,1788095360.5757215,CRITICAL,False
 AL-2440D4,ROUTE_UPDATED,Vehicle V-104 rerouted via Haflong Bypass to bypass R-204.,1788095360.5739589,WARNING,False
