@@ -98,3 +98,7 @@ def train():
 
 if __name__ == "__main__":
     train()
+    from app.ml.disruption_model import train_disruption_model
+    from app.ml.delay_model import train_delay_model
+    train_disruption_model()
+    train_delay_model()

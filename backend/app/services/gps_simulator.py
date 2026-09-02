@@ -5,7 +5,11 @@ from app.database import load_vehicles, save_vehicles, load_roads, load_deliveri
 from app.models.models import Vehicle, Road, Delivery
 from app.services.decision_engine import evaluate_vehicle_route
 from app.services.delivery_risk_service import recalculate_delivery_risks
-from app.database import load_weather
+from app.services.geofence_service import calculate_route_deviation
+from app.services.alert_engine import generate_alert
+from app.services.eta_engine import calculate_vehicle_eta
+from app.database import load_weather, load_deliveries, save_deliveries
+from app.services.app_state import is_emergency_mode
 
 # We need a background task that constantly advances vehicles along their routes
 async def run_gps_simulation(interval_seconds: int = 5):
@@ -65,15 +69,16 @@ def update_vehicle_positions():
     roads_dict = {r.road_id: r for r in roads}
     weather = load_weather()
     
-    # TODO: Read emergency mode from state if available, assuming false for now unless overridden
-    is_emergency_mode = False 
-    
+    emergency_active = is_emergency_mode()
+    deliveries = load_deliveries()
+    deliveries_dict = {d.vehicle_id: d for d in deliveries}
+
     updated = False
     
     for veh in vehicles:
         if veh.status == "EN_ROUTE":
             # 1. Evaluate Decision Engine for rerouting
-            decision_data = evaluate_vehicle_route(veh, roads_dict, weather, is_emergency_mode)
+            decision_data = evaluate_vehicle_route(veh, roads_dict, weather, emergency_active)
             
             if decision_data["reroute_required"]:
                 veh.current_route_id = decision_data["recommended_route"]
@@ -116,14 +121,30 @@ def update_vehicle_positions():
             # Just store the raw string for the UI to display
             # We'll attach the reasoning string so the UI can read it
             veh.delay_reason = " | ".join(decision_data["reasons"]) if decision_data["reasons"] else ""
-            
+
+            # Geofencing: detect route deviation
+            deviation = calculate_route_deviation(veh, roads_dict)
+            if deviation.get("route_deviation"):
+                generate_alert(
+                    alert_type="ROUTE_DEVIATION",
+                    message=f"Vehicle {veh.vehicle_id} deviated {deviation['distance_from_route_km']:.1f}km from planned route.",
+                    severity="WARNING",
+                    vehicle_id=veh.vehicle_id,
+                    recommended_action="Verify driver status and recalculate route",
+                )
+
+            # Update ETA for linked delivery
+            delivery = deliveries_dict.get(veh.vehicle_id)
+            if delivery:
+                eta_result = calculate_vehicle_eta(veh, delivery, roads_dict)
+                veh.eta_str = eta_result["eta_str"]
+                delivery.eta_str = eta_result["eta_str"]
+                delivery.delay_reason = eta_result.get("explanation", "")
+
             updated = True
-            
+
     if updated:
         save_vehicles(vehicles)
-        
-        # Also recalculate deliveries ETAs and risks based on updated vehicles
-        deliveries = load_deliveries()
         vehicles_dict = {v.vehicle_id: v for v in vehicles}
         recalculate_delivery_risks(deliveries, vehicles_dict, roads_dict)
         save_deliveries(deliveries)

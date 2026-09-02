@@ -1,9 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import roads, vehicles, deliveries, incidents, weather, simulation, alerts, reset, routes
+from app.routers import roads, vehicles, deliveries, incidents, weather, simulation, alerts, reset, routes, intelligence
 from app.services.risk_service import recalculate_all_roads_risk
 from app.ml.predictor import load_model
+from app.ml.disruption_model import load_disruption_model, train_disruption_model
+from app.ml.delay_model import load_delay_model, train_delay_model
 
 app = FastAPI(
     title="NER-Sentinel AI API",
@@ -30,17 +32,29 @@ app.include_router(simulation.router, prefix="/api")
 app.include_router(alerts.router, prefix="/api")
 app.include_router(reset.router, prefix="/api")
 app.include_router(routes.router, prefix="/api")
+app.include_router(intelligence.router, prefix="/api")
 
 @app.on_event("startup")
 def startup_event():
-    # Load ML Model
+    # Load ML models (train XGBoost if missing)
     load_model()
-    # Trigger initial risk and status calculations to populate database fields
+    if not load_disruption_model():
+        try:
+            train_disruption_model()
+            load_disruption_model()
+        except Exception as e:
+            print(f"Disruption model training skipped: {e}")
+    if not load_delay_model():
+        try:
+            train_delay_model()
+            load_delay_model()
+        except Exception as e:
+            print(f"Delay model training skipped: {e}")
+
     try:
         recalculate_all_roads_risk()
         print("Initial database recalculation completed successfully.")
-        
-        # Start GPS Simulator background task
+
         from app.services.gps_simulator import run_gps_simulation
         import asyncio
         asyncio.create_task(run_gps_simulation())

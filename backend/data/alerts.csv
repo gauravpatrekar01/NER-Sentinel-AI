@@ -1,10 +1,1 @@
 alert_id,type,message,timestamp,severity,read
-AL-931468,ROAD_BLOCKED,Road R-218 (Khliehriat-Silchar Ridge (NH-6)) is BLOCKED due to a Flood. 1 vehicles and 1 deliveries affected.,1788371219.3742828,CRITICAL,False
-AL-B2BDA5,ROAD_BLOCKED,Road R-218 (Khliehriat-Silchar Ridge (NH-6)) is BLOCKED due to a Flood. 1 vehicles and 1 deliveries affected.,1788371218.808347,CRITICAL,False
-AL-355E18,ROAD_BLOCKED,Road R-218 (Khliehriat-Silchar Ridge (NH-6)) is BLOCKED due to a Flood. 1 vehicles and 1 deliveries affected.,1788371217.0044994,CRITICAL,False
-AL-172F29,ROUTE_UPDATED,Vehicle V-105 rerouted via Haflong Bypass to bypass R-204.,1788362976.450352,WARNING,False
-AL-6A4579,CRITICAL_DELIVERY_DELAY,CRITICAL cargo DL-1092 (Essential Medicines) is delayed by +1h 25m. ETA: 18:05.,1788362976.4466116,CRITICAL,False
-AL-55BAAD,ROUTE_UPDATED,Vehicle V-104 rerouted via Haflong Bypass to bypass R-204.,1788362976.4447384,WARNING,False
-AL-42E968,ROUTE_UPDATED,Vehicle V-102 rerouted via Haflong Bypass to bypass R-204.,1788362976.4395056,WARNING,False
-AL-BCCD47,ROUTE_UPDATED,Vehicle V-101 rerouted via Haflong Bypass to bypass R-204.,1788362976.4359481,WARNING,False
-AL-015E44,ROAD_BLOCKED,Road R-204 (Guwahati-Shillong Highway (NH-6)) is BLOCKED due to a Landslide. 4 vehicles and 3 deliveries affected.,1788362976.4324448,CRITICAL,False

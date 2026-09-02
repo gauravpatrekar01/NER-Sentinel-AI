@@ -8,7 +8,7 @@ from app.services.weather_integration import determine_weather_risk
 from app.services.risk_service import recalculate_all_roads_risk
 from app.services.gps_simulator import update_vehicle_positions
 from app.services.incident_service import register_incident_and_cascade
-from app.services.alert_service import generate_alert
+from app.services.alert_engine import generate_alert
 
 router = APIRouter(prefix="/simulation", tags=["simulation"])
 
@@ -36,7 +36,7 @@ def trigger_simulation_event(schema: EventSimulationSchema):
             weather.visibility_km = 8.0
             weather.forecast = "Clear"
         elif event == "HEAVY_RAIN":
-            weather.rainfall_mm = 120.0
+            weather.rainfall_mm = 150.0
             weather.visibility_km = 2.0
             weather.forecast = "Heavy Rain"
         elif event == "EXTREME_RAIN":
@@ -49,8 +49,8 @@ def trigger_simulation_event(schema: EventSimulationSchema):
         
         # Recalculate
         recalculate_all_roads_risk()
-        # Evaluate decision engine
-        update_vehicle_positions()
+        from app.services.decision_engine import run_decision_pipeline
+        run_decision_pipeline(trigger=f"weather_{event}")
         
         if event != "NORMAL":
             generate_alert("WEATHER_ALERT", f"Weather changed to {weather.forecast}. Risk levels updated.", "WARNING")
@@ -77,9 +77,14 @@ def trigger_simulation_event(schema: EventSimulationSchema):
             optimize_immediately=True
         )
     elif event == "EMERGENCY_MODE":
-        # Toggle emergency mode logic can be handled via state, or we just alert
-        generate_alert("EMERGENCY_MODE", "Emergency Mode Activated: Prioritizing medical and food supplies.", "CRITICAL")
-        # In a real app we'd set a global state. For demo, we just trigger a GPS update that assumes emergency mode
-        update_vehicle_positions()
+        from app.services.app_state import set_emergency_mode
+        from app.services.decision_engine import run_decision_pipeline
+        set_emergency_mode(True)
+        generate_alert(
+            "EMERGENCY_MODE",
+            "Emergency Mode Activated: Prioritizing medical and food supplies with safety-first routing.",
+            "CRITICAL",
+        )
+        run_decision_pipeline(trigger="emergency_mode", emergency_mode=True)
         
     return {"status": "success", "event": event}

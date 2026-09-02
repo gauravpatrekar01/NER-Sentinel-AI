@@ -1,9 +1,9 @@
 vehicle_id,cargo,origin,destination,current_lat,current_lon,speed_kmh,current_route_id,original_route_id,eta_str,original_eta_str,delivery_risk_pct,progress,status,last_updated
-V-101,Agricultural Seeds,Guwahati Depot,Shillong Market,26.18682,92.83576,45.0,R-301;R-302;R-303,R-204,12:50,12:50,20.0,0.31181020594931763,EN_ROUTE,1788371273.9660866
-V-102,Food Supplies,Guwahati Depot,Shillong Warehouse,25.30628,93.01297,40.0,R-301;R-302;R-303,R-204,13:30,13:30,25.0,0.6382755145081523,EN_ROUTE,1788371273.9660866
-V-103,Drinking Water,Shillong Depot,Jowai Distribution Point,25.47041,92.19092,35.0,R-207,R-207,13:10,13:10,15.0,0.823599940079905,EN_ROUTE,1788371273.9660866
-V-104,Essential Medicines,Guwahati Central Depot,Silchar District Hospital,25.14987,93.02949,42.0,R-301;R-302;R-303,R-204;R-207;R-211;R-218,16:40,16:40,61.0,0.7502662190875501,EN_ROUTE,1788371273.9660866
-V-105,Return Cargo (Empty crates),Silchar Depot,Guwahati Depot,26.12053,92.03765,48.0,R-301;R-302;R-303,R-218;R-211;R-207;R-204,18:20,18:20,45.0,0.057909260827142685,EN_ROUTE,1788371273.9660866
-V-106,Sanitation Kits,Haflong Warehouse,Silchar NGO Center,25.16261,93.03,38.0,R-303,R-303,14:50,14:50,32.0,0.09236880461374897,EN_ROUTE,1788371273.9660866
-V-107,Construction Material,Guwahati Steel Yard,Silchar Infrastructure Project,26.19486,92.41752,40.0,R-301;R-302;R-303,R-301;R-302;R-303,19:30,19:30,28.0,0.14226706290030156,EN_ROUTE,1788371273.9660866
-V-108,Medical Oxygen Cylinders,Shillong Medical Gas,Silchar District Hospital,25.38016,92.29617,40.0,R-207;R-211;R-218,R-207;R-211;R-218,17:15,17:15,52.0,0.3870462300484632,EN_ROUTE,1788371273.9660866
+V-101,Agricultural Seeds,Guwahati Depot,Shillong Market,26.04,91.89,45.0,R-204,R-204,12:50,12:50,20.0,0.45,EN_ROUTE,1788372194.51222
+V-102,Food Supplies,Guwahati Depot,Shillong Warehouse,25.9015,91.88,40.0,R-204,R-204,13:30,13:30,25.0,0.65,EN_ROUTE,1788372194.5122428
+V-103,Drinking Water,Shillong Depot,Jowai Distribution Point,25.57,92.05,35.0,R-207,R-207,13:10,13:10,15.0,0.3,EN_ROUTE,1788372194.5122824
+V-104,Essential Medicines,Guwahati Central Depot,Silchar District Hospital,26.12,91.79,42.0,R-204;R-207;R-211;R-218,R-204;R-207;R-211;R-218,16:40,16:40,61.0,0.12,EN_ROUTE,1788372194.5122967
+V-105,Return Cargo (Empty crates),Silchar Depot,Guwahati Depot,24.897,92.593,48.0,R-218;R-211;R-207;R-204,R-218;R-211;R-207;R-204,18:20,18:20,45.0,0.1,EN_ROUTE,1788372194.5123124
+V-106,Sanitation Kits,Haflong Warehouse,Silchar NGO Center,25.11,92.87,38.0,R-303,R-303,14:50,14:50,32.0,0.5,EN_ROUTE,1788372194.5123267
+V-107,Construction Material,Guwahati Steel Yard,Silchar Infrastructure Project,26.23,92.52,40.0,R-301;R-302;R-303,R-301;R-302;R-303,19:30,19:30,28.0,0.18,EN_ROUTE,1788372194.5123394
+V-108,Medical Oxygen Cylinders,Shillong Medical Gas,Silchar District Hospital,25.49,92.18,40.0,R-207;R-211;R-218,R-207;R-211;R-218,17:15,17:15,52.0,0.25,EN_ROUTE,1788372194.512354

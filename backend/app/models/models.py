@@ -35,6 +35,7 @@ class Vehicle(BaseModel):
     progress: float  # 0.0 to 1.0 along the path
     status: str  # EN_ROUTE, DELAYED, BLOCKED, COMPLETED
     last_updated: float = 0.0  # epoch timestamp
+    delay_reason: Optional[str] = ""
 
 class Delivery(BaseModel):
     delivery_id: str
